@@ -35,6 +35,9 @@ void moveSnakeArray();
 void makePoint();
 void buidGameBoard();
 void mark();
+void markPoint();
+void markSnake();
+bool collisionSelf();
 bool collision();
 bool col = false;
 
@@ -111,7 +114,7 @@ void gameState()
 			setup();
 			while(!gameover)
 			{
-			this_thread::sleep_for(chrono::milliseconds(1000/10));
+			this_thread::sleep_for(chrono::milliseconds(1000/5));
 			cout << "\e[H\e[2J\e[3J";
 			doState();
 			move();
@@ -219,6 +222,44 @@ void move()
 }
 
 
+
+void mark()
+{
+	buidGameBoard();
+	markPoint();
+	col = collision();
+	// collisionSelf();
+	markSnake();
+}
+
+
+void markPoint()
+{
+	board[pointArry[0]][pointArry[1]] = 'O';
+}
+
+void markSnake()
+{
+	for (int i = 0; i < len; ++i)
+	{
+		board[lenpositon[i].x][lenpositon[i].y] = '@';
+	}
+}
+
+
+bool collisionSelf()
+{
+	for (int i = 1; i < len; ++i)
+	{
+		if (lenpositon[i].x == x + h && lenpositon[i].y == y + w)
+		{
+			return true;
+		}
+	}
+	return false;
+}
+
+
 bool collision()
 {
 	if (board[x + h][y + w] == '#')
@@ -248,8 +289,22 @@ bool collision()
 		// makePoint();
 		return false;
 	}
+	else if (collisionSelf())
+	{
+		gameover = true;
+		currentState = gameFail;
+		if (score > high_score)
+		{
+			high_score = score;
+		}
+		return true;
+	}
 	return false;
 }
+
+
+
+
 
 void buidGameBoard()
 {
@@ -270,17 +325,7 @@ void buidGameBoard()
 }
 
 
-void mark()
-{
-	buidGameBoard();
-	board[pointArry[0]][pointArry[1]] = 'O';
-	// collision();
-	col = collision();
-	for (int i = 0; i < len; ++i)
-	{
-		board[lenpositon[i].x][lenpositon[i].y] = '@';
-	}
-}
+
 
 
 

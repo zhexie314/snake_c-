@@ -1,15 +1,14 @@
 #include <iostream>
-
-
-using namespace std;
-
+int aaa(int a)
+{
+	return a + 2;
+}
 
 
 int main(int argc, char const *argv[])
 {
-	for (int i = 1 - 2; i >= 0; i--)
-	{
-		cout << i << endl;
-	}
-	return 0;
+	int b = 5;
+	b = aaa(b);
+	std::cout << b << std::endl;
+	return b;
 }
